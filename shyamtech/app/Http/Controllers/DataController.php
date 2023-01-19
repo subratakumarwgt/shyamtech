@@ -52,7 +52,7 @@ class DataController extends Controller
           $sl_no=$i;
           $id  = $record["id"];
 
-          $action = '<a href="#" class="btn btn-sm btn-outline-primary m-1 edit small btn-sm" data-id="'.$record["id"].'">Edit</a><a href="#" class="btn btn-sm btn-outline-danger m-1 deleteButton btn-sm small" data-id="'.$record["id"].'"   >Delete</a>';
+          $action = '<a href="#" class="btn btn-sm btn-outline-primary m-1 editButton small btn-sm" data-id="'.$record["id"].'">Edit</a><a href="#" class="btn btn-sm btn-outline-danger m-1 deleteButton btn-sm small" data-id="'.$record["id"].'"   >Delete</a><a href="#" class="btn btn-sm btn-outline-success m-1 viewButton btn-sm small" data-id="'.$record["id"].'"   >View</a>';
           $data_arr[] = array(
             "ID"     =>$record["id"],
             "Name"     =>$record["name"],
@@ -73,7 +73,14 @@ class DataController extends Controller
     
     echo json_encode($response);
     }
-    
+    public function getOne($id){
+        $data = $this->getRowById($id);
+        if($data)
+        return response(['status' => true, "data" => $data,"message"=>"Data fetched successfully"], 200);
+        else 
+        return response(['status' => $data, "data" => $data,"message"=>"No records found with given ID"], 400);
+
+    }    
     public function save(Request $request,$id=null){
         
         try {

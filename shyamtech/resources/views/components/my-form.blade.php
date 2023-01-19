@@ -1,5 +1,6 @@
+
+<form action="/api/submit" class="form"  enctype="multipart/form-data" id="myForm">
 <h2 class="text-primary"><span id="submitType" >Add</span> new user </h2>
-<form action="/api/submit" class="form" enctype="multipart/form-data" id="myForm">
     <input type="hidden" id="id" value="0">
     <div class="mb-2 p-1">
         <label for="" class="form-label">Name <span class="text-danger">(*)</span> </label>
@@ -38,6 +39,6 @@
     </div>
     <div class="mb-2 p-1">
         <button class="submit btn btn-outline-primary" type="submit">Submit</button>
-        <button class="btn btn-outline-dark" id="reset" type="button">Reset</button>
+        <button class="btn btn-outline-dark" id="reset" type="button" onclick="setAddForm()">Reset</button>
     </div>
 </form>

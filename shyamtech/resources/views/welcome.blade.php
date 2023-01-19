@@ -400,13 +400,13 @@
     </style>
 </head>
 
-<body class="p-0 border rounded">
+<body class="p-0 rounded">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-4 p-3 border-right border">
+            <div class="col-md-3 p-3">
               <x-my-form />
             </div>
-            <div class="col-md-8 p-3 border">
+            <div class="col-md-9 p-3 border">
               <x-my-list />
             </div>
         </div>
@@ -481,6 +481,30 @@ function loadoverlay(object) {
 function hideoverlay(object) {
     object.LoadingOverlay('hide');
 }
+async function getOneRow(id){ //the one common function to fetch data for edit and view operations
+
+        let data = await $.get("/get/"+id,function(data) {
+        return data
+    })
+    return data.data;
+}
+async function setEditForm(id){   // Get the row data from backened and populate the data in the existing form;
+    $("#submitType").html("Edit")
+    let user = await getOneRow(id)
+    console.log(user)
+    $("#name").val(user.name)
+    $("#address").val(user.address)    
+    $("#id").val(user.id)
+    $("#image").prop("required",false)
+    $(`input[value=${user.gender}]`).prop("checked",true)
+    $("#img_prv").prop("src",user.image)
+}
+function setAddForm(){ // Reset the form to add new data
+    $("#submitType").html("Add")
+    $("#id").val(0)
+    $("#image").prop("required",true)
+    $("#name , #address").val("")
+}
 var imgInp = document.getElementById("image");
     if (imgInp) {
         imgInp.onchange = evt => {
@@ -489,13 +513,17 @@ var imgInp = document.getElementById("image");
             if (file) {
                 hideoverlay($("#img_prv"));
                 img_prv.src = URL.createObjectURL(file)
-
             }
         }
     }
+    $("#userTable").on("click",".editButton",function(e){
+       id =  $(this).data("id")
+       setEditForm(id)
+    })
 $(".submit").on("click",async function(e){
     e.preventDefault();
     //adding UI form validation
+    let formType = "Added"
 
     if($(this).closest("form").valid()){
     loadoverlay($(this))
@@ -514,8 +542,9 @@ $(".submit").on("click",async function(e){
         form.append("_token","{{csrf_token()}}")
         if(parseInt($("#id").val()) !== 0){
             form.append("id",$("#id").val())
-            method = "PUT"
+           
             postUrl = `${postUrl}/${$("#id").val()}`
+            formType = "Updated"
         }
 		var settings = {
 			"url": postUrl,
@@ -554,40 +583,43 @@ $(".submit").on("click",async function(e){
 		};
 
 		response = await $.ajax(settings).done(function(response) {
-			var response2 = JSON.parse(response)
-		
+	
+                            return response;
+
+		});   
+        var response2 = JSON.parse(response)
+
+            console.log(response)
+            $("#id").val(response2.data.id)		
 			$.notify({
-				message: "Data created. Adding new row..."
+				message: `User ${formType} successfully. ID: `+response2.data.id
 			}, {
 				type: 'success',
 				z_index: 10000,
 				timer: 2000,
 			})
-			return response
+			
 
-            $("#id").val(response2.data.id)
+           
             dataTable.row.add({
-                            "ID":  response2.data.id,
-                            "Name":  response2.data.name,
-                            "Image":    `<img src="${response2.data.image}" data-src="${response2.data.image}" width="80px" class="img-thumbnail" /> `,
-                            "Gender": response2.data.gender,
-                            "Address":    response2.data.address,
-                            "Action":    `<a href="#" class="btn btn-sm btn-outline-primary m-1 edit small btn-sm" data-id="${response2.data.id}">Edit</a><a href="#" class="btn btn-sm btn-outline-danger m-1 deleteButton btn-sm small" data-id="${response2.data.id}">Delete</a>`
-                            }).draw();
-
-
-		});   
-        dataTable.draw()
+            "ID":  response2.data.id,
+            "Name":  response2.data.name,
+            "Image":    `<img src="${response2.data.image}" data-src="${response2.data.image}" width="70px" class="img-thumbnail" /> `,
+            "Gender": response2.data.gender,
+            "Address":    response2.data.address,
+            "Action":    `<a href="#" class="btn btn-sm btn-outline-primary m-1 editButton small btn-sm" data-id="${response2.data.id}">Edit</a><a href="#" class="btn btn-sm btn-outline-danger m-1 deleteButton btn-sm small" data-id="${response2.data.id}">Delete</a><a href="#" class="btn btn-sm btn-outline-success m-1 viewButton btn-sm small" data-id="${response2.data.id}" >View</a>`
+            }).draw();
+        // dataTable.draw()
         hideoverlay($(this));
     }
     else{
     $.notify({
-      message: "Please check the form again "
-   },{
-    type:'danger',
-    z_index:10000,
-    timer:2000,
-   });
+         message: "Please check the form again "
+    },{
+        type:'danger',
+        z_index:10000,
+        timer:2000,
+    });
     }
 })
 </script>
