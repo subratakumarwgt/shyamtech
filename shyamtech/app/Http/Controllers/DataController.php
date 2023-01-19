@@ -81,6 +81,19 @@ class DataController extends Controller
         return response(['status' => $data, "data" => $data,"message"=>"No records found with given ID"], 400);
 
     }    
+    public function delete($id){
+        $data = $this->getRowById($id);
+        if($data)
+        {
+            if($this->deleteRowById($id))
+            return response(['status' => true, "data" => $data,"message"=>"Data deleted successfully"], 200);
+            else
+            return response(['status' => $data, "data" => $data,"message"=>"There was some error"], 400);
+      
+        }
+          else 
+        return response(['status' => $data, "data" => $data,"message"=>"No records found with given ID"], 400);
+    }
     public function save(Request $request,$id=null){
         
         try {
@@ -157,5 +170,18 @@ class DataController extends Controller
             }
         }
         return false;
+    }
+
+    private function deleteRowById($id){
+        $data = Session::get("users");
+        Session::forget('users');
+        foreach ($data as $key => $row) {
+          if($row["id"] == $id){
+            unset($data[$key]);
+            break;
+          }
+        }
+        Session::put("users",$data);
+        return true;
     }
 }
