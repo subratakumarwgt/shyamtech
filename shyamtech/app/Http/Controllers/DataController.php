@@ -30,15 +30,25 @@ class DataController extends Controller
       $columnSortOrder = @$order_arr[0]['dir']; 
       $searchValue = @$search_arr['value']; 
       $recordsQuery =Session::get("users");
-     
-    
 
-    //   $sort=0;
-    //   if($searchValue!=""){
-    //     $sort=1;
-    //     $_SESSION['key'] = $searchValue;
-    //     $recordsQuery=$recordsQuery->where('pages.name', 'LIKE', '%' .$_SESSION['key']. '%');
-    // }
+      if($columnName == "ID"){
+         usort($recordsQuery, function($a, $b) {
+            return $a['id'] <=> $b['id'];
+        });
+        if($columnSortOrder == "desc"){
+            $recordsQuery =  array_reverse($recordsQuery);
+     
+           }
+      }
+      if($columnName == "Name"){
+         usort($recordsQuery, function($a, $b) {
+            return strcmp($a["name"], $b["name"]);
+        });
+        if($columnSortOrder == "desc"){
+            $recordsQuery =  array_reverse($recordsQuery);     
+        }
+      }
+
     
       $totalRecords = count($recordsQuery);
       $totalRecordswithFilter = count($recordsQuery);

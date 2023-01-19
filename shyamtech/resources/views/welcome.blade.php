@@ -437,6 +437,7 @@
     var dataTable = $('#userTable').DataTable({
         'processing': true,
         serverSide: true,
+        rowReorder: true,  
         language: {
             processing: '<div class="loader-box"><div class="loader-2"></div></div>'
         },
@@ -457,27 +458,27 @@
         },
         columns: [{
                 data: 'ID',
-                Orderable: true
+                orderable: true
             },
             {
                 data: 'Name',
-                Orderable: true
+                orderable: true
             },
             {
                 data: 'Image',
-                Orderable: false
+              
             },
             {
                 data: 'Gender',
-                Orderable: false
+              
             },
             {
                 data: 'Address',
-                Orderable: false
+              
             },
             {
                 data: 'Action',
-                Orderable: false
+              
             },
         ],
     });
