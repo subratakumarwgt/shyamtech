@@ -495,6 +495,7 @@
     }
     async function setEditForm(id) { // Get the row data from backened and populate the data in the existing form;
         $("#submitType").html("Edit")
+        loadoverlay($("form"))
         let user = await getOneRow(id)
         console.log(user)
         $("#name").val(user.name)
@@ -504,6 +505,7 @@
         $("#image").val("")
         $(`input[value=${user.gender}]`).prop("checked", true)
         $("#img_prv").prop("src", user.image)
+        hideoverlay($("form"))
     }
     async function deleteRow(id){
        await $.post("/delete/"+id,function(success){      
