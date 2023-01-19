@@ -501,6 +501,7 @@
         $("#address").val(user.address)
         $("#id").val(user.id)
         $("#image").prop("required", false)
+        $("#image").val("")
         $(`input[value=${user.gender}]`).prop("checked", true)
         $("#img_prv").prop("src", user.image)
     }
@@ -537,6 +538,8 @@
     function setAddForm() { // Reset the form to add new data
         $("#submitType").html("Add")
         $("#id").val(0)
+        $("#image").val("")
+        $("#img_prv").prop("src", "{{asset('/images/view.png')}}")
         $("#image").prop("required", true)
         $("#name , #address").val("")
     }
