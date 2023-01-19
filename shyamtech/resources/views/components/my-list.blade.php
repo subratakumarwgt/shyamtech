@@ -6,6 +6,7 @@
                 <th>Name</th>
                 <th>Image</th>
                 <th>Gender</th>
+                <th>Address</th>
                 <th>Action</th>
             </tr>
         </thead>

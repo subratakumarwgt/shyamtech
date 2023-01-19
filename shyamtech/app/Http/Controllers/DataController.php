@@ -16,7 +16,62 @@ class DataController extends Controller
     }
 
     public function get(Request $request){
-        return response(["status" => true , "data" => Session::get("users")  ]);
+      $draw = $request->draw;        
+      $start = $request->start;
+      $rowperpage = $request->length; 
+  
+      $columnIndex_arr = $request->order;
+    
+      $columnName_arr = $request->columns;
+      $order_arr = $request->order;
+      $search_arr = $request->search;  
+      $columnIndex = $columnIndex_arr[0]['column']; 
+      $columnName = $columnName_arr[$columnIndex]['data']; 
+      $columnSortOrder = @$order_arr[0]['dir']; 
+      $searchValue = @$search_arr['value']; 
+      $recordsQuery =Session::get("users");
+     
+    
+
+    //   $sort=0;
+    //   if($searchValue!=""){
+    //     $sort=1;
+    //     $_SESSION['key'] = $searchValue;
+    //     $recordsQuery=$recordsQuery->where('pages.name', 'LIKE', '%' .$_SESSION['key']. '%');
+    // }
+    
+      $totalRecords = count($recordsQuery);
+      $totalRecordswithFilter = count($recordsQuery);
+      $records = array_slice($recordsQuery,$start,$rowperpage);
+  
+      
+  
+    $data_arr = array();
+      $i=1;
+      foreach($records as $record){
+          $sl_no=$i;
+          $id  = $record["id"];
+
+          $action = '<a href="#" class="btn btn-sm btn-outline-primary m-1 edit small btn-sm" data-id="'.$record["id"].'">Edit</a><a href="#" class="btn btn-sm btn-outline-danger m-1 deleteButton btn-sm small" data-id="'.$record["id"].'"   >Delete</a>';
+          $data_arr[] = array(
+            "ID"     =>$record["id"],
+            "Name"     =>$record["name"],
+            "Image"     =>"<img src='".asset("/images/loader.gif")."' data-src='".$record["image"]."' class='img-thumbnail image' width='70px'  />",
+            "Gender"     =>$record["gender"],
+            "Address"     =>$record["address"],
+            "Action"      =>$action,        
+          );
+          $i++;
+  
+      }  
+      $response = array(
+          "draw" => intval($draw),
+          "iTotalRecords" => $totalRecords,
+          "iTotalDisplayRecords" => $totalRecordswithFilter,
+          "aaData" => $data_arr
+      );
+    
+    echo json_encode($response);
     }
     
     public function save(Request $request,$id=null){
@@ -35,7 +90,7 @@ class DataController extends Controller
             else{
                 //save the image and get the path
                 if($request->image && !empty($request->image)){
-                    $imagepath = "//storage/".request('image')->store($this->folder_name, 'public');
+                    $imagepath = "storage/".request('image')->store($this->folder_name, 'public');
                 }
                 else 
                     $imagepath = !empty($id) ? $this->getRowById($id)["image"] : "";
