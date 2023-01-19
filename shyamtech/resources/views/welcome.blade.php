@@ -400,13 +400,13 @@
     </style>
 </head>
 
-<body class="p-2 border rounded">
+<body class="p-0 border rounded">
     <div class="container-fluid">
-        <div class="row p-2">
-            <div class="col-md-4 p-4">
+        <div class="row">
+            <div class="col-md-4 p-3 border-right border">
               <x-my-form />
             </div>
-            <div class="col-md-8 p-4">
+            <div class="col-md-8 p-3 border">
               <x-my-list />
             </div>
         </div>
@@ -455,7 +455,7 @@ $(".submit").on("click",async function(e){
     loadoverlay($(this))
 
      // make API call to submit data to server.
-     let postUrl = "/api/submit"
+     let postUrl = "/submit"
      let method = "POST"
      var form = new FormData();
 		
@@ -465,10 +465,11 @@ $(".submit").on("click",async function(e){
         form.append("image", file);
 		form.append("address", $("#address").val());
         form.append("gender", $('input[name=gender]:checked').val());
+        form.append("_token","{{csrf_token()}}")
         if(parseInt($("#id").val()) !== 0){
             form.append("id",$("#id").val())
             method = "PUT"
-            postUrl = `/api/submit/${$("#id").val()}`
+            postUrl = `${postUrl}/${$("#id").val()}`
         }
 		var settings = {
 			"url": postUrl,
@@ -517,6 +518,8 @@ $(".submit").on("click",async function(e){
 				timer: 2000,
 			})
 			return response
+
+            $("#id").val(response2.data.id)
 
 
 		});   

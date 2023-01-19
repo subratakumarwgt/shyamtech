@@ -38,5 +38,6 @@
     </div>
     <div class="mb-2 p-1">
         <button class="submit btn btn-outline-primary" type="submit">Submit</button>
+        <button class="btn btn-outline-dark" id="reset" type="button">Reset</button>
     </div>
 </form>
