@@ -1,6 +1,9 @@
 # shyamtech
 
 ## Installation Guide
+Get Source Code from GIT.
+# https://github.com/subratakumarwgt/shyamtech.git
+Open Project Folder
 Open Terminal. 
 command as follows
  1. cd shyamtech
@@ -12,10 +15,10 @@ Open Browser and Open URL
 #  http://127.0.0.1:8000/ 
 
 
-# Description
+## Description
 This a sample project I have built in LARAVEL. for an assignment from ShyamSteel Future Tech.
 This project meets the following Requirements.
-## Task 1: Create a form without using database. User can sort data by Name &amp; ID.
+### Task 1: Create a form without using database. User can sort data by Name &amp; ID.
 The Guidlines has been followed accordingly
 ##Guidelines 
 1. Use Git to manage the source code. A clear Git history showing your process is
