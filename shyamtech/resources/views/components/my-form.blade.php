@@ -1,6 +1,6 @@
 
 <form action="/api/submit" class="form"  enctype="multipart/form-data" id="myForm">
-<h2 class="text-primary"><span id="submitType" >Add</span> new user </h2>
+<h2 class="text-primary"><span id="submitType" >Add</span> user </h2>
     <input type="hidden" id="id" value="0">
     <div class="mb-2 p-1">
         <label for="" class="form-label">Name <span class="text-danger">(*)</span> </label>

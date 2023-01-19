@@ -400,7 +400,8 @@
     </style>
 </head>
 
-<body class="p-0 rounded">
+<body class="p-0">
+  <x-my-modal />
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-3 p-3">
@@ -456,6 +457,7 @@
             })
 
         },
+        searching: false,
         columns: [{
                 data: 'ID',
                 orderable: true
@@ -523,6 +525,14 @@
             });
         })
     }
+    async function viewRow(id){
+        let user = await getOneRow(id)
+        $("#userImage").prop("src",user.image)       
+        $("#userName").html(user.name)
+        $("#userGender").html(user.gender)
+        $("#userAddress").html(user.address)
+        $("#userModal").modal("show")
+    }
 
     function setAddForm() { // Reset the form to add new data
         $("#submitType").html("Add")
@@ -552,6 +562,10 @@
         }
        
     })
+    $("#userTable").on("click", ".viewButton", function(e) {
+        id = $(this).data("id")
+        viewRow(id)
+    })
     $(".submit").on("click", async function(e) {
         e.preventDefault();
         //adding UI form validation
@@ -560,7 +574,7 @@
         if ($(this).closest("form").valid()) {
             loadoverlay($(this))
 
-            // make API call to submit data to server.
+            // make AJAX call to submit data to server.
             let postUrl = "/submit"
             let method = "POST"
             var form = new FormData();
@@ -615,9 +629,7 @@
             };
 
             response = await $.ajax(settings).done(function(response) {
-
                 return response;
-
             });
             var response2 = JSON.parse(response)
 
