@@ -447,12 +447,80 @@ var imgInp = document.getElementById("image");
             }
         }
     }
-$(".submit").on("click", function(e){
+$(".submit").on("click",async function(e){
     e.preventDefault();
     //adding UI form validation
+
     if($(this).closest("form").valid()){
+    loadoverlay($(this))
+
      // make API call to submit data to server.
-     alert("form is valid")
+     let postUrl = "/api/submit"
+     let method = "POST"
+     var form = new FormData();
+		
+		form.append("name", $("#name").val());
+		var file = $("#image")[0].files[0];
+        if(file)
+        form.append("image", file);
+		form.append("address", $("#address").val());
+        form.append("gender", $('input[name=gender]:checked').val());
+        if(parseInt($("#id").val()) !== 0){
+            form.append("id",$("#id").val())
+            method = "PUT"
+            postUrl = `/api/submit/${$("#id").val()}`
+        }
+		var settings = {
+			"url": postUrl,
+			"method": method,
+			"timeout": 0,
+			"processData": false,
+			"mimeType": "multipart/form-data",
+			"contentType": false,
+			"data": form,
+			statusCode: {
+				400: function() {
+					hideoverlay($(this))
+					//  = JSON.parse();
+					$.notify({
+						message: "Please check the form again"
+					}, {
+						type: 'danger',
+						z_index: 10000,
+						timer: 2000,
+					});
+					return 0;
+				},
+				500: function() {
+					hideoverlay($(this))
+					// response = JSON.parse(response);
+					$.notify({
+						message: "Something went wrong !Internal Error: "
+					}, {
+						type: 'danger',
+						z_index: 10000,
+						timer: 2000,
+					})
+					return 0;
+				}
+			}
+		};
+
+		response = await $.ajax(settings).done(function(response) {
+			var response2 = JSON.parse(response)
+		
+			$.notify({
+				message: "Data created. Adding new row..."
+			}, {
+				type: 'success',
+				z_index: 10000,
+				timer: 2000,
+			})
+			return response
+
+
+		});   
+        hideoverlay($(this));
     }
     else{
     $.notify({

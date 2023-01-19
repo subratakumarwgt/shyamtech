@@ -1,14 +1,14 @@
 <h2 class="text-primary"><span id="submitType" >Add</span> new user </h2>
 <form action="/api/submit" class="form" enctype="multipart/form-data" id="myForm">
-    <input type="hidden" >
+    <input type="hidden" id="id" value="0">
     <div class="mb-2 p-1">
         <label for="" class="form-label">Name <span class="text-danger">(*)</span> </label>
         <input type="text" class="form-control" name="name" id="name" placeholder="" required>
     </div>
     <div class="mb-2 p-1">
-        <div class="preview p-4" > <img src="" alt="" id="img_prv" class="img-thumbnail shadow-sm" >  </div>
+        <div class="preview pl-4 pr-4" > <img width="200px" src="{{asset('images/view.png')}}" alt="Preview" id="img_prv" class="img-thumbnail shadow-sm" >  </div>
         <label for="" class="form-label">Image <span class="text-danger">(*)</span> </label>
-        <input type="file" class="form-control" name="image" id="image" placeholder="" required>
+        <input type="file" class="form-control" name="image" id="image" placeholder="" required accept="image/*">
     </div>
     <div class="mb-2 p-1">
         <label for="" class="form-label">Address <span class="text-danger">(*)</span> </label>
