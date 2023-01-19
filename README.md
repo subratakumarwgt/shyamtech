@@ -9,6 +9,7 @@ command as follows
  1. cd shyamtech
  2. composer install
  3. php artisan key:generate
+ 4. php artisan storage:link
  4. php artisan serve
 
 Open Browser and Open URL
