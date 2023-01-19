@@ -31,7 +31,7 @@ class DataController extends Controller
       $searchValue = @$search_arr['value']; 
       $recordsQuery =Session::get("users");
 
-      if($columnName == "ID"){
+      if($columnName == "ID"){ //sorting by ID
          usort($recordsQuery, function($a, $b) {
             return $a['id'] <=> $b['id'];
         });
@@ -40,9 +40,9 @@ class DataController extends Controller
      
            }
       }
-      if($columnName == "Name"){
+      if($columnName == "Name"){ //sorting  by Name
          usort($recordsQuery, function($a, $b) {
-            return strcmp($a["name"], $b["name"]);
+            return strcasecmp($a["name"], $b["name"]);
         });
         if($columnSortOrder == "desc"){
             $recordsQuery =  array_reverse($recordsQuery);     
